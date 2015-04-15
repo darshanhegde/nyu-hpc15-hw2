@@ -1,5 +1,5 @@
 EXECS=ssort.o
-MPICC=mpicc-openmpi-mp
+MPICC=mpicc
 
 all: ${EXECS}
 
