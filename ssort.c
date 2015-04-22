@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "util.h"
+
+
 
 static int compare(const void *a, const void *b)
 {
@@ -22,16 +25,26 @@ static int compare(const void *a, const void *b)
 
 int main( int argc, char *argv[])
 {
-    int rank, size;
-    int i, N;
+    int rank, size, i;
     int *vec;
     int MAX_FILE_NAME=40;
     MPI_Status status;
 
+    if (argc != 2) {
+        printf("USAGE: ./ssort.o <Numbers per node>\n");
+        abort();
+    }
+    int N = atoi(argv[1]);
+    
+    timestamp_type time1, time2;
+    
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+    if (rank == 0) {
+        get_timestamp(&time1);
+    }
     /* Number of random numbers per processor (this should be increased
     * for actual tests or could be passed in through the command line */
     N = 1000;
@@ -153,16 +166,25 @@ int main( int argc, char *argv[])
         fprintf(fp, "%d \n", sorted_vec[i]);
     }
     
+    MPI_Barrier(MPI_COMM_WORLD);
     /* free all allocated memory */
     free(vec);
     free(sorted_vec);
     free(splitters);
     free(nsends);
     free(nrecvs);
+    
     if (rank == 0) {
         free(all_splitters);
+        get_timestamp(&time2);
+        double elapsed = timestamp_diff_in_seconds(time1,time2);
+        printf("Time elapsed is %f seconds.\n", elapsed);
     }
     
+    
+    
     MPI_Finalize();
+
+    
     return 0;
 }
