@@ -45,9 +45,6 @@ int main( int argc, char *argv[])
     if (rank == 0) {
         get_timestamp(&time1);
     }
-    /* Number of random numbers per processor (this should be increased
-    * for actual tests or could be passed in through the command line */
-    N = 1000;
 
     vec = calloc(N, sizeof(int));
     /* seed random number generator differently on every core */

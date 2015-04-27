@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J ssortMPI           # job name
-#SBATCH -o ssortMPI.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J ss_dar_MPI           # job name
+#SBATCH -o ssortMPI%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 64              # total number of mpi tasks requested
 #SBATCH -p development     # queue (partition) -- normal, development, etc.
 #SBATCH -t 01:30:00        # run time (hh:mm:ss) - 1.5 hours
@@ -8,4 +8,4 @@
 #SBATCH --mail-type=begin  # email me when the job starts
 #SBATCH --mail-type=end    # email me when the job finishes
 #SBATCH -A TG-ASC150003    # account number
-ibrun ./ssort.o              # run the MPI executable named a.out
+ibrun ./ssort.o 50000000             # run the MPI executable named a.out
